@@ -3,10 +3,26 @@ if(typeof module === "object"){
   var GeoJSON = require("../..//spec/spec/GeoJSON.js");
 }
 
+function round(num, pow) {
+  return Math.round(num*Math.pow(10, pow))/Math.pow(10, pow);
+}
+
 beforeEach(function() {
   this.addMatchers({
     toBeInstanceOfClass: function(classRef){
       return this.actual instanceof classRef;
+    },
+
+    toApproximatelyEqual: function(obj){
+      // Math.round(5.123456*Math.pow(10, 5))/Math.pow(10, 5));
+      if(Object.prototype.toString.call(obj) === '[object Array]') {
+        for(i in obj) {
+          if(round(obj[i], 5) !== round(this.actual[i], 5)) {
+            return false;
+          }
+        }
+        return true;
+      }
     }
   });
 });
@@ -94,7 +110,7 @@ describe("Primitives", function(){
 
       var mercator = point.toGeographic();
 
-      expect(mercator.coordinates).toEqual([101.99999999179026, 1.9999999236399357]);
+      expect(mercator.coordinates).toApproximatelyEqual([101.99999999179026, 1.9999999236399357]);
     });
 
     it("should convert a Primitive to JSON", function(){
@@ -467,11 +483,11 @@ describe("Primitives", function(){
     });
 
     it("should calculate bounds", function(){
-      expect(circle.bbox).toEqual([ -122.00898315283914, 44.99364759960156, -121.99101684715673, 45.00635169618245 ]);
+      expect(circle.bbox).toApproximatelyEqual([ -122.00898315283914, 44.99364759960156, -121.99101684715673, 45.00635169618245 ]);
     });
 
     it("should calculate envelope", function(){
-      expect(circle.envelope()).toEqual({ x : -122.00898315283914, y : 44.99364759960156, w : 0.01796630568240687, h : 0.012704096580890223 });
+      expect(circle.envelope()).toApproximatelyEqual({ x : -122.00898315283914, y : 44.99364759960156, w : 0.01796630568240687, h : 0.012704096580890223 });
     });
 
     it("should contain a point", function() {
