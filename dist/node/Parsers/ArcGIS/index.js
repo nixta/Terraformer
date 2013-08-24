@@ -236,7 +236,7 @@
 
     return new Terraformer.Primitive(geojson);
   }
-
+  
   // GeoJSON -> ArcGIS
   function convert(input, arcgisIdField){
     var geojson = JSON.parse(JSON.stringify(input));
