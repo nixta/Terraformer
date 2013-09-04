@@ -52,10 +52,6 @@ module.exports = function (grunt) {
       local_store: {
         src: ['<banner:meta.banner>', "src/Store/LocalStorage.js"],
         dest: 'dist/browser/Store/LocalStorage.js'
-      },
-	  memory_store_node: {
-        src: ['<banner:meta.banner>', "src/Store/Memory.js"],
-        dest: 'dist/node/Stores/Memory/index.js'
       }
     },
 
@@ -166,7 +162,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-jasmine-node');
 
-  grunt.registerTask('test', ['build_source', 'jasmine_node', 'jasmine']);
-  grunt.registerTask('build_source', ['rtree-exports', 'concat']);
-  grunt.registerTask('default', [ 'test', 'jshint', 'uglify', 'complexity' ]);
+  grunt.registerTask('test', ['build_source', 'concat', 'jasmine_node', 'jasmine']);
+  grunt.registerTask('build_source', ['rtree-exports']);
+  grunt.registerTask('default', [ 'build_source', 'concat', 'jshint', 'jasmine', 'jasmine_node', 'uglify', 'complexity' ]);
 };
